@@ -1,6 +1,7 @@
 package com.example.adminama.geoquiz;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private ImageButton mBackButton;
     private TextView mQuestionTextView;
+    private Button mCheatButton;
 
 
     private Question[] mQuestionBank = new Question[]{
@@ -81,6 +83,17 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(false);
             }
         });
+
+        mCheatButton = (Button) findViewById(R.id.chet_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
 
         mNextButton = (ImageButton) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
