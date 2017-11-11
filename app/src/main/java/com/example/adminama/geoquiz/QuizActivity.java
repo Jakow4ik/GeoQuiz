@@ -17,6 +17,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_IS_CHEATER = "isCheater";
     private static final int REQUEST_CODE_CHEAT = 0;
     private boolean mIsCheater;
 
@@ -26,6 +27,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mBackButton;
     private TextView mQuestionTextView;
     private Button mCheatButton;
+    private Toast toast;
 
 
     private Question[] mQuestionBank = new Question[]{
@@ -47,6 +49,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER);
         }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -55,6 +58,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -121,6 +125,8 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndex = mCurrentIndex - 1;
                 else
                     mCurrentIndex = (mQuestionBank.length - 1);
+
+                mIsCheater = false;
                 updateQuestion();
 
             }
@@ -166,7 +172,10 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean(KEY_IS_CHEATER,mIsCheater);
+
     }
+
 
     @Override
     public void onStop() {
@@ -193,6 +202,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if (mIsCheater) {
             messageResId = R.string.judgment_toast;
+            mQuestionBank[mCurrentIndex].setCheat(true);
         } else {
             if (userPressedTrue == answerIsTrue) {
                 messageResId = R.string.correct_toast;
@@ -201,7 +211,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         }
 
-        Toast toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, Gravity.CENTER, Gravity.CENTER);
         toast.show();
     }

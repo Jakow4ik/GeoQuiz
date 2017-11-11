@@ -9,11 +9,22 @@ public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
 
+    public boolean isCheat() {
+        return mCheat;
+    }
+
+    public void setCheat(boolean cheat) {
+        mCheat = cheat;
+    }
+
+    private boolean mCheat;
+
 
     public Question(int textResId, boolean answerTrue) {
 
         mTextResId = textResId;
         mAnswerTrue = answerTrue;
+        mCheat = false;
     }
 
     public int getTextResId() {
