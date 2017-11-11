@@ -12,6 +12,7 @@ public class CheatActivity extends AppCompatActivity {
 
 
     private static final String EXTRA_ANSWER_IS_TRUE = "com.example.adminama.geoquiz.answer_is_true";
+    private static final String EXTRA_ANSWER_SHOW = "com.example.adminama.geoquiz.answer_shown";
 
     private boolean mAnswerIsTrue;
 
@@ -22,6 +23,10 @@ public class CheatActivity extends AppCompatActivity {
         Intent intent = new Intent(packageContext, CheatActivity.class);
         intent.putExtra(EXTRA_ANSWER_IS_TRUE, answerISTrue);
         return intent;
+    }
+
+    public static boolean wasAnswerShown(Intent result) {
+        return result.getBooleanExtra(EXTRA_ANSWER_SHOW, false);
     }
 
     @Override
@@ -41,8 +46,16 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
+
+                setAnswerShownReult(true);
             }
         });
+        }
+
+        private void setAnswerShownReult(boolean isAnswerShown) {
+            Intent data = new Intent();
+            data.putExtra(EXTRA_ANSWER_SHOW, isAnswerShown);
+            setResult(RESULT_OK, data);
         }
     }
 
