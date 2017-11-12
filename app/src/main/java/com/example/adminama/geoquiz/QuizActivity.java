@@ -22,11 +22,13 @@ public class QuizActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHEAT = 0;
     //private boolean[] mIsCheater;
 
+
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
     private ImageButton mBackButton;
     private TextView mQuestionTextView;
+    private TextView mCheatSumTextView;
     private Button mCheatButton;
     private Toast toast;
 
@@ -40,7 +42,8 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private int mCurrentIndex = 0;
-    private boolean [] mIsCheater = new boolean[mQuestionBank.length];
+    private boolean[] mIsCheater = new boolean[mQuestionBank.length];
+    private int mCheatSum = 3;
 
 
     @Override
@@ -55,7 +58,12 @@ public class QuizActivity extends AppCompatActivity {
             //mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER);
         }
 
+
+        mCheatSumTextView = (TextView) findViewById(R.id.cheat_sum);
+
+
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        mCheatSumTextView.setText(String.valueOf(mCheatSum));
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +157,12 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             mIsCheater[mCurrentIndex] = CheatActivity.wasAnswerShown(data);
+            mCheatSum--;
+            mCheatSumTextView.setText(String.valueOf(mCheatSum));
+            if (mCheatSum <= 0) {
+                mCheatButton.setEnabled(false);
+            }
+
         }
     }
 
